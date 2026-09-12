@@ -16,86 +16,17 @@ public class Elements {
     public Color getColor() {
         return color;
     }
-
-    public boolean fallsDown() {
-        return false;
-    }
-
-    public boolean floatsUp() {
-        return false;
-    }
-
-    public void step(Sandbox sandbox, int row, int col) {
-        // Default: stay still (Fire).
-    }
-
-    protected void fallDown(Sandbox sandbox, int row, int col) { //This method is about one particle, in this row and this column
-        
-        int below = row + 1;
-        if (sandbox.isEmpty(below, col)) { //If the particle below us is empty then we move down.
-            
-            try {
-                // we ask sandbox to move the particle from its current position to the one below it.
-                // this will empty the pixel in its current position and fill the one below it.
-                sandbox.moveElement(row, col, below, col);
-            } catch (Exception e) { // move element might refuse
-                System.out.println("Gravity error: " + e.getMessage());
-                // we catch it so the entire program doesnt crash, rather we just print the reason.
-            }
-        } else { // the square beneath ISNT empty so we remain in place and try to move the particle to the side.
-            sandbox.side_gravity(row, col);
-        }
-    }
-
-    protected void floatUp(Sandbox sandbox, int row, int col) { // This method is about one particle, in this row and this column. Gases use it to go up.
-        if (Math.random() < 0.6) { // 60% of the time we dont go straight, but drift apart
-            try { // try and move this particle diagonally above
-                sandbox.reverse_side_gravity(row, col);
-            } catch (Exception e) { // move wasnt allowed so we print the reason.
-                System.out.println("Reverse side gravity error: " + e.getMessage());
-            }
-        } else {
-            int above = row - 1;
-            if (sandbox.isEmpty(above, col)) {
-                try { // try and move this particle up.
-                    sandbox.moveElement(row, col, above, col);
-                } catch (Exception e) { // move element might refuse
-                    System.out.println("Reverse gravity error: " + e.getMessage());
-                }
-            }
-        }
-    }
 }
 
 class Sand extends Elements {
     public Sand() {
         super(true, false, Color.YELLOW, false);
     }
-
-    @Override
-    public boolean fallsDown() {
-        return true;
-    }
-
-    @Override
-    public void step(Sandbox sandbox, int row, int col) {
-        fallDown(sandbox, row, col);
-    }
 }
 
 class Water extends Elements {
     public Water() {
         super(true, false, Color.BLUE, false);
-    }
-
-    @Override
-    public boolean fallsDown() {
-        return true;
-    }
-
-    @Override
-    public void step(Sandbox sandbox, int row, int col) {
-        fallDown(sandbox, row, col);
     }
 }
 
@@ -117,21 +48,9 @@ class Fire extends Elements {
         // reverseGravity = true -> fire rises like a real flame instead of piling up like sand
         super(false, true, Color.ORANGE, true);
     }
-
     public boolean isDead() {
         return System.currentTimeMillis() - bornAt >= LIFETIME;
     }
-
-    @Override
-    public boolean floatsUp() {
-        return true;
-    }
-
-    @Override
-    public void step(Sandbox sandbox, int row, int col) {
-        floatUp(sandbox, row, col);
-    }
-
     @Override
     public Color getColor() {
         long age = System.currentTimeMillis() - bornAt;
@@ -158,15 +77,5 @@ class Fire extends Elements {
 class Gas extends Elements {
     public Gas() {
         super(false, true, Color.WHITE, true);
-    }
-
-    @Override
-    public boolean floatsUp() {
-        return true;
-    }
-
-    @Override
-    public void step(Sandbox sandbox, int row, int col) {
-        floatUp(sandbox, row, col);
     }
 }

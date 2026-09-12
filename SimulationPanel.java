@@ -5,6 +5,8 @@ import javax.swing.*;
 public class SimulationPanel extends JPanel {
 
     Sandbox sandbox;
+    int brushSize = 5;
+    
 
     public SimulationPanel(Sandbox sandbox) {
         this.sandbox = sandbox;
@@ -12,7 +14,7 @@ public class SimulationPanel extends JPanel {
         // Converting mouse to pixels and allows us to spawn our material
         MouseAdapter mouse = new MouseAdapter() {
 
-            void place(MouseEvent e) {
+             void place(MouseEvent e) {
 
                 int col = e.getX() / Sandbox.CELL_SIZE;
                 int row = e.getY() / Sandbox.CELL_SIZE;
@@ -29,6 +31,9 @@ public class SimulationPanel extends JPanel {
                     repaint();
                 }
             }
+              public void BrushSize(int size) {
+                brushSize = size; 
+    }
 
             // mous events for click and click+drag
             @Override

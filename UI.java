@@ -1,21 +1,12 @@
 import java.awt.*;
 import javax.swing.*;
 
-//Encapsulation Example
-
 public class UI extends JFrame {
 
-        //Private prevents other classes from directly 
-        //accessing the sandbox variable inside UI.
-        private Sandbox sandbox;
+        Sandbox sandbox;
 
-
-        //Now the UI class is hiding its internal data
         public UI(int width, int height, Sandbox sandbox) {
                 this.sandbox = sandbox;
-
-
-
 
                 // Frame Creation
                 setTitle("COMP2000 Project");
@@ -65,6 +56,17 @@ public class UI extends JFrame {
                 JPanel bottomPanel = new JPanel();
                 bottomPanel.setBackground(Color.GRAY);
 
+                //Brush Size Button
+
+                  JButton BrushButton = new JButton("BrushSize");
+
+// clear button
+                  JButton ClearButton = new JButton("Clear");
+                 ClearButton.addActionListener(e -> {
+                        sandbox.clearSandbox();
+                 });
+                                sandbox.clearSandbox();
+
                 // Sand Button
                 JButton sandButton = new JButton("Sand");
                 sandButton.addActionListener(e -> {
@@ -94,6 +96,8 @@ public class UI extends JFrame {
                 bottomPanel.add(waterButton);
                 bottomPanel.add(fireButton);
                 bottomPanel.add(gasButton);
+                bottomPanel.add(BrushButton);
+                bottomPanel.add(ClearButton);
 
                 leftPanel.add(bottomPanel, BorderLayout.CENTER);
 

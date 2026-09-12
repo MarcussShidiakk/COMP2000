@@ -17,14 +17,17 @@ public class Sandbox {
         grid[20][40] = tester.get();
     }
 
-    int frameCounter = 0;
 
-    public boolean isEmpty(int row, int col) { //checks if the square is on the grid
-        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
-            return false; // this position is outside of the grid and treated as not empty
+      public void clearSandbox() {
+        for(int row = 0; row < ROWS; row++) {
+            for(int col = 0; col < COLS; col++) {
+                grid[row][col] = null;
+            }
         }
-        return grid[row][col] == null; // this cell has no element and is treated as empty
+
     }
+
+    int frameCounter = 0;
 
     // Checks that a position is inside the grid
     public void checkPosition(int row, int col) throws Exception {
@@ -63,21 +66,49 @@ public class Sandbox {
             }
         }
 
+        // Normal gravity
         for (int row = ROWS - 2; row >= 0; row--) {
             for (int col = 0; col < COLS; col++) {
-                Elements e = grid[row][col];
-                if (e != null && e.fallsDown()) {
-                    e.step(this, row, col);
+                if (grid[row][col] != null &&
+                        !grid[row][col].reverseGravity) {
+
+                    // Fall straight down
+                    if (grid[row + 1][col] == null) {
+                        try {
+                            moveElement(row, col, row + 1, col);
+                        } catch (Exception e) {
+                            System.out.println("Gravity error: " + e.getMessage());
+                        }
+                    }
+                    // If blocked, move diagonally
+                    else {
+                        side_gravity(row, col);
+                    }
                 }
             }
         }
 
+        // Reverse gravity
         if (frameCounter % 2 == 0) {
             for (int row = 1; row < ROWS; row++) {
                 for (int col = 0; col < COLS; col++) {
-                    Elements e = grid[row][col];
-                    if (e != null && e.floatsUp()) {
-                        e.step(this, row, col);
+                    if (grid[row][col] != null && grid[row][col].reverseGravity) {
+                        // 60% chance to move diagonally
+                        if (Math.random() < 0.6) {
+                            try {
+                                reverse_side_gravity(row, col);
+                            } catch (Exception e) {
+                                System.out.println("Reverse side gravity error: " + e.getMessage());
+                            }
+                        }
+                        // Otherwise move straight up
+                        else if (grid[row - 1][col] == null) {
+                            try {
+                                moveElement(row, col, row - 1, col);
+                            } catch (Exception e) {
+                                System.out.println("Reverse gravity error: " + e.getMessage());
+                            }
+                        }
                     }
                 }
             }
