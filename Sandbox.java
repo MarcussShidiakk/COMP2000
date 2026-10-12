@@ -68,6 +68,15 @@ public class Sandbox {
         grid[row][col] = null;
     }
 
+ public void clearGrid() {
+    for (int row = 0; row < ROWS; row++) {
+        for (int col = 0; col < COLS; col++) {
+            grid[row][col] = null;
+        }
+    }
+}
+
+
     public void step() {
         frameCounter++;
         // Remove fire that has burnt out, otherwise it stays in the grid and piles up
