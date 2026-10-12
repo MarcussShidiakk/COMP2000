@@ -89,12 +89,17 @@ public class UI extends JFrame {
                         sandbox.tester.set(new Gas());
                 });
 
+                JButton clearButton = new JButton("ClearGrid");
+                clearButton.addActionListener(e -> {
+                        sandbox.clearGrid();
+                });
+
                 // Add buttons to bottom bar
                 bottomPanel.add(sandButton);
                 bottomPanel.add(waterButton);
                 bottomPanel.add(fireButton);
                 bottomPanel.add(gasButton);
-
+                bottomPanel.add(clearButton);
                 leftPanel.add(bottomPanel, BorderLayout.CENTER);
 
                 setSize(
