@@ -2,11 +2,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Physics sandbox = new Physics();
+        Sandbox sandbox = new Sandbox();
 
         new UI(
-                Physics.WIDTH,
-                Physics.HEIGHT,
+                Sandbox.WIDTH,
+                Sandbox.HEIGHT,
                 sandbox);
     }
 }
